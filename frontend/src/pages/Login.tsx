@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, LogIn, Activity } from 'lucide-react';
+import { Mail, Lock, LogIn, Activity, Settings } from 'lucide-react';
 import { api } from '../services/api';
 
 interface LoginProps {
@@ -12,6 +12,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showApiSettings, setShowApiSettings] = useState(false);
+  const [customApiUrl, setCustomApiUrl] = useState(localStorage.getItem('roadmap_backend_url') || '');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,6 +49,15 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl" />
 
       <div className="w-full max-w-md glass-panel rounded-2xl shadow-glass p-8 relative z-10 border border-dark-border/40 bg-dark-card/85">
+        {/* API Settings Trigger */}
+        <button 
+          onClick={() => setShowApiSettings(true)}
+          className="absolute top-4 right-4 p-2 text-dark-muted hover:text-white rounded-lg hover:bg-dark-border/30 transition-all"
+          title="API Server Settings"
+          type="button"
+        >
+          <Settings className="w-5 h-5" />
+        </button>
         <div className="flex flex-col items-center mb-8">
           <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-emerald-500 text-white shadow-lg shadow-blue-500/30 mb-4 animate-float">
             <Activity className="w-6 h-6" />
@@ -128,6 +139,67 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
           </Link>
         </div>
       </div>
+
+      {/* API Settings Modal */}
+      {showApiSettings && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-sm bg-dark-card border border-dark-border/40 rounded-2xl p-6 shadow-glass relative text-dark-text">
+            <h3 className="text-lg font-bold text-white mb-2">API Connection Settings</h3>
+            <p className="text-xs text-dark-muted mb-4">
+              Configure the backend API URL. This is helpful if you are testing on mobile or running the server on a different IP.
+            </p>
+            
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-dark-muted tracking-wider mb-2">
+                  Backend API URL
+                </label>
+                <input
+                  type="text"
+                  placeholder="http://localhost:5000/api"
+                  value={customApiUrl}
+                  onChange={(e) => setCustomApiUrl(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-dark-bg/60 border border-dark-border/40 rounded-xl text-sm focus:outline-none focus:border-blue-500 text-dark-text"
+                />
+              </div>
+              <div className="text-[11px] text-dark-muted bg-dark-bg/30 p-2.5 rounded-lg border border-dark-border/20">
+                <span className="font-semibold block text-white mb-0.5">Currently Resolving To:</span>
+                <code className="text-blue-400 break-all">{localStorage.getItem('roadmap_backend_url') || `http://${window.location.hostname}:5000/api`}</code>
+              </div>
+            </div>
+            
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  localStorage.removeItem('roadmap_backend_url');
+                  setCustomApiUrl('');
+                  setShowApiSettings(false);
+                  window.location.reload();
+                }}
+                className="px-4 py-2 text-xs font-semibold text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+              >
+                Reset Default
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (customApiUrl.trim()) {
+                    localStorage.setItem('roadmap_backend_url', customApiUrl.trim());
+                  } else {
+                    localStorage.removeItem('roadmap_backend_url');
+                  }
+                  setShowApiSettings(false);
+                  window.location.reload();
+                }}
+                className="px-4 py-2 text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-xl transition-all"
+              >
+                Save & Reload
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,18 @@
-const API_BASE = 'http://localhost:5000/api';
+const getApiBase = (): string => {
+  const custom = localStorage.getItem('roadmap_backend_url');
+  if (custom) return custom;
+  const hostname = window.location.hostname;
+  if (hostname && hostname !== 'localhost' && !hostname.endsWith('.vercel.app')) {
+    return `http://${hostname}:5000/api`;
+  }
+  return 'http://localhost:5000/api';
+};
+
+const API_BASE = {
+  toString() {
+    return getApiBase();
+  }
+} as any;
 
 // Helper to get token from localStorage
 const getAuthHeaders = () => {
