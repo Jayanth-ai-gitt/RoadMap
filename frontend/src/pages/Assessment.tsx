@@ -35,8 +35,23 @@ export const Assessment: React.FC = () => {
     'Custom Track'
   ];
 
-  const handleNext = () => setStep((s) => Math.min(s + 1, 3));
-  const handleBack = () => setStep((s) => Math.max(s - 1, 1));
+  const handleNext = () => {
+    console.log('handleNext clicked. Current step was:', step);
+    setStep((s) => {
+      const next = Math.min(s + 1, 3);
+      console.log('Setting step to:', next);
+      return next;
+    });
+  };
+
+  const handleBack = () => {
+    console.log('handleBack clicked. Current step was:', step);
+    setStep((s) => {
+      const prev = Math.max(s - 1, 1);
+      console.log('Setting step to:', prev);
+      return prev;
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
