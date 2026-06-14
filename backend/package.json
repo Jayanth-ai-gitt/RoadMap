@@ -1,7 +1,7 @@
 {
-  "name": "careerpath-backend",
+  "name": "roadmap-backend",
   "version": "1.0.0",
-  "description": "Backend API for CareerPath AI",
+  "description": "Backend API for RoadMap AI",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

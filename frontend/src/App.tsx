@@ -63,7 +63,7 @@ export const App: React.FC = () => {
     return (
       <div className="min-h-screen bg-dark-bg flex flex-col items-center justify-center gap-4 text-dark-text">
         <div className="w-10 h-10 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
-        <p className="text-sm text-dark-muted font-bold tracking-wider uppercase">Loading CareerPath AI...</p>
+        <p className="text-sm text-dark-muted font-bold tracking-wider uppercase">Loading RoadMap AI...</p>
       </div>
     );
   }

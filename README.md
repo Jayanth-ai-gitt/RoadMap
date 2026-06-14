@@ -1,6 +1,6 @@
-# CareerPath AI 🚀
+# RoadMap AI 🚀
 
-CareerPath AI is a premium, modern software engineering companion designed to guide developers from beginner tutorials toward production-ready competence. The system mimics a seasoned mentor (15+ Years Tech Lead experience) by injecting blunt advice, performance metrics critique, and realistic assessments into your learning timeline.
+RoadMap AI is a premium, modern software engineering companion designed to guide developers from beginner tutorials toward production-ready competence. The system mimics a seasoned mentor (15+ Years Tech Lead experience) by injecting blunt advice, performance metrics critique, and realistic assessments into your learning timeline.
 
 ---
 

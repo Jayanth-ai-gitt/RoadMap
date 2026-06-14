@@ -37,7 +37,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 // Start Server
 app.listen(PORT, () => {
   console.log(`===================================================`);
-  console.log(`🚀 CareerPath AI Server running on port ${PORT}`);
-  console.log(`📂 DB Connected: PostgreSQL`);
+  console.log(`🚀 RoadMap AI Server running on port ${PORT}`);
+  console.log(`📂 DB Connected: SQLite`);
   console.log(`===================================================`);
 });

@@ -58,7 +58,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
         </div>
         <div>
           <h1 className="font-bold text-lg leading-tight tracking-wider bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-            CAREERPATH AI
+            ROADMAP AI
           </h1>
           <span className="text-[10px] text-dark-muted uppercase font-semibold tracking-widest">
             Senior-Led Mentor
@@ -99,7 +99,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
           </div>
           <div className="flex-1 min-w-0">
             <h4 className="text-sm font-semibold truncate">{user?.name || 'Developer'}</h4>
-            <p className="text-xs text-dark-muted truncate">{user?.email || 'user@careerpath.ai'}</p>
+            <p className="text-xs text-dark-muted truncate">{user?.email || 'user@roadmap.ai'}</p>
           </div>
         </div>
         <button
@@ -122,7 +122,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
             <Activity className="w-4 h-4" />
           </div>
           <span className="font-bold text-sm bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-            CAREERPATH AI
+            ROADMAP AI
           </span>
         </div>
         <button 
