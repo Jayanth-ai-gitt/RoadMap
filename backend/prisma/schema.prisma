@@ -1,0 +1,152 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  password        String
+  name            String
+  role            String           @default("USER") // USER, ADMIN
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  assessment      Assessment?
+  roadmaps        Roadmap[]
+  userProgress    UserProgress[]
+  studyPlans      StudyPlan[]
+  resumeAnalyses  ResumeAnalysis[]
+  chatMessages    ChatMessage[]
+}
+
+model Assessment {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  desiredCareer    String
+  education        String
+  currentSkills    String
+  experienceLevel  String   // BEGINNER, INTERMEDIATE, ADVANCED
+  studyHoursPerDay Float
+  learningStyle    String   // VISUAL, PRACTICAL, THEORETICAL
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Career {
+  id             String          @id @default(uuid())
+  name           String          @unique
+  description    String
+  skills         Skill[]
+  projects       Project[]
+  certifications Certification[]
+  roadmaps       Roadmap[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Skill {
+  id           String         @id @default(uuid())
+  careerId     String
+  career       Career         @relation(fields: [careerId], references: [id], onDelete: Cascade)
+  name         String
+  description  String
+  phase        String         // FUNDAMENTALS, CORE, ADVANCED
+  order        Int
+  seniorTips   String         // 15+ years experience advice & reality checks
+  resources    String         // JSON string representing list of resources
+  progress     UserProgress[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Roadmap {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  careerId  String
+  career    Career   @relation(fields: [careerId], references: [id], onDelete: Cascade)
+  progress  Float    @default(0.0) // 0 to 100 percentage
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, careerId])
+}
+
+model UserProgress {
+  id             String      @id @default(uuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId        String
+  skill          Skill       @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  status         String      @default("NOT_STARTED") // NOT_STARTED, IN_PROGRESS, COMPLETED
+  notes          String      @default("")
+  certificateUrl String      @default("")
+  updatedAt      DateTime    @updatedAt
+
+  @@unique([userId, skillId])
+}
+
+model Project {
+  id           String     @id @default(uuid())
+  careerId     String
+  career       Career     @relation(fields: [careerId], references: [id], onDelete: Cascade)
+  name         String
+  description  String
+  requirements String     // JSON string representing array of requirements
+  difficulty   String     // BEGINNER, INTERMEDIATE, ADVANCED
+  seniorTake   String     // Senior developer commentary
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Certification {
+  id            String     @id @default(uuid())
+  careerId      String
+  career        Career     @relation(fields: [careerId], references: [id], onDelete: Cascade)
+  name          String
+  difficulty    String     // BEGINNER, INTERMEDIATE, ADVANCED
+  cost          Float
+  duration      String
+  prerequisites String
+  url           String
+  seniorTake    String
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model StudyPlan {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weeklyGoal  String
+  dailyTasks  String   // JSON string representing weekly schedule
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ResumeAnalysis {
+  id                     String   @id @default(uuid())
+  userId                 String
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resumeText             String
+  score                  Int
+  missingSkills          String   // JSON list
+  missingProjects        String   // JSON list
+  missingCertifications  String   // JSON list
+  improvementSuggestions String   // JSON list
+  createdAt              DateTime @default(now())
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   // "user" or "assistant"
+  message   String
+  createdAt DateTime @default(now())
+}

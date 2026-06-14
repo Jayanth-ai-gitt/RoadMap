@@ -1,0 +1,29 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Build outputs
+dist/
+build/
+out/
+.tmp/
+*.tsbuildinfo
+
+# Database & Environments
+.env
+prisma/dev.db
+prisma/dev.db-journal
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# OS & Editor
+.DS_Store
+.vscode/
+.idea/
+Thumbs.db
